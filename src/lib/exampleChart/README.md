@@ -1,0 +1,1 @@
+Here info how to use the component
