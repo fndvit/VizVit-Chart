@@ -1,58 +1,111 @@
-# Svelte library
+# @vit-foundation/chart
 
-Everything you need to build a Svelte library, powered by [`sv`](https://npmjs.com/package/sv).
+Colour scales and the legends that describe them.
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+Two things live here, and they are one package for one reason: **a renderer that
+paints classed data and a legend that explains it must agree on what a class
+is.** `classColors` / `classOpacities` are that agreement; everything else is the
+bar that draws it.
 
-## Creating a project
+It knows nothing about maps, and nothing about any dataset. One dependency
+(`chroma-js`) and one peer (`svelte`, only for the component).
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Install
 
 ```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm install @vit-foundation/chart
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+## The scale
 
-## Building
+```ts
+import { classColors, classOpacities } from '@vit-foundation/chart/scale';
 
-To build your library:
+const k = breaks.length + 1;
+classColors(['#fff7bc', '#fec44f', '#d95f0e'], k); // one hex per class, light→dark
+classOpacities(k, 0.2, 1); // one alpha per class, low→high
+```
+
+Hand the **same ramp and the same `k`** to whatever paints the data, and the
+legend and the rendering cannot disagree.
+
+## The legend
+
+```svelte
+<script>
+	import PercentLegend from '@vit-foundation/chart/PercentLegend.svelte';
+</script>
+
+<PercentLegend colors={RAMP} max={72} breaks={[6.6, 18.7, 35.6, 58.4]} />
+```
+
+`breaks` classes the colour channel; `opacity` classes (or ramps) the alpha
+channel; the two composite independently, so mismatched break sets still render
+correctly. `flat` is the opacity-only variant — the bar holds the darkest ramp
+colour and lets alpha carry the value. `mode="ticks"` draws break marks instead
+of hard-edged bands.
+
+The arithmetic is exported separately, so you can build your own bar:
+
+```ts
+import { bandEdges, barGradient, pickLabels, ticksOf } from '@vit-foundation/chart/legend';
+```
+
+## Theming
+
+The component ships plain CSS with custom-property hooks, so it renders
+standalone and restyles without a CSS framework:
+
+| property                       | default        |
+| ------------------------------ | -------------- |
+| `--vit-legend-font`            | `inherit`      |
+| `--vit-legend-label-color`     | `currentColor` |
+| `--vit-legend-label-size`      | `0.75rem`      |
+| `--vit-legend-tick-size`       | `0.625rem`     |
+| `--vit-legend-stroke`          | `#424c5c`      |
+| `--vit-legend-bar-height`      | `0.375rem`     |
+| `--vit-legend-max-label-width` | `3.5rem`       |
+
+## Subpaths
+
+Import the narrow subpath, not the barrel:
+
+| subpath                                      | holds                                 |
+| -------------------------------------------- | ------------------------------------- |
+| `@vit-foundation/chart/scale`                | `classColors`, `classOpacities`       |
+| `@vit-foundation/chart/legend`               | the bar arithmetic, no Svelte, no DOM |
+| `@vit-foundation/chart/PercentLegend.svelte` | the component                         |
+
+The two `.ts` subpaths run in plain Node. The barrel (`@vit-foundation/chart`)
+re-exports the component, so it needs a Svelte-aware bundler — reach for it only
+from an app that has one.
+
+## Scope
+
+In: colour-scale arithmetic and the legends that depict it.
+
+Out: anything that describes a _symbol_ rather than a scale (size rings, alpha
+tiers — those are map vocabulary), and bespoke one-off graphics. A chart you
+built for one story is not a library.
+
+## Development
 
 ```sh
-npm pack
+npm install
+npm test       # vitest: `server` (node) + `client` (real chromium)
+npm run check  # svelte-check
+npm run lint
+npm run storybook
+npm run prepack  # svelte-package + publint
 ```
 
-To create a production version of your showcase app:
+Component suites are `*.svelte.test.ts` and run in a real browser, so the
+legend is measured and styled for real — which matters, because label thinning
+depends on the bar's rendered width.
 
-```sh
-npm run build
-```
+## Package name
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```sh
-npm publish
-```
+This package was published as `@vit-foundation/vizvit-chart` up to `0.0.3`,
+which contained only the `ExampleChart` scaffold. It is `@vit-foundation/chart`
+from `0.1.0`. `ExampleChart` is still exported from the barrel; nothing was
+removed.
