@@ -7,6 +7,11 @@ paints classed data and a legend that explains it must agree on what a class
 is.** `classColors` / `classOpacities` are that agreement; everything else is the
 bar that draws it.
 
+> Extracted from the National Geographic _Food for Tomorrow_ explore globe,
+> where the same arithmetic already had four readers — a GPU renderer's stepped
+> visual variables, a CSS hover mirror, the legend bar and the tier dots — and
+> drift between them was the standing hazard.
+
 It knows nothing about maps, and nothing about any dataset. One dependency
 (`chroma-js`) and one peer (`svelte`, only for the component).
 
@@ -88,20 +93,19 @@ Out: anything that describes a _symbol_ rather than a scale (size rings, alpha
 tiers — those are map vocabulary), and bespoke one-off graphics. A chart you
 built for one story is not a library.
 
-## Development
+## Documentation
 
-```sh
-npm install
-npm test       # vitest: `server` (node) + `client` (real chromium)
-npm run check  # svelte-check
-npm run lint
-npm run storybook
-npm run prepack  # svelte-package + publint
-```
+The full site lives in [`docs/`](./docs/index.md) and is served by
+`npm run dev:docs`:
 
-Component suites are `*.svelte.test.ts` and run in a real browser, so the
-legend is measured and styled for real — which matters, because label thinning
-depends on the bar's rendered width.
+- **[Getting started](./docs/getting-started.md)** — install, the subpaths, a legend on screen
+- **[The scale](./docs/scale.md)** — class bands, and the contract they hold
+- **[The legend](./docs/legend.md)** — the two channels, the modes, theming
+- **[Reference](./docs/reference.md)** — every entry point and what it exports
+- **[Changelog](./docs/changelog/index.md)** — one page per version, newest first
+
+[CONTRIBUTING](./CONTRIBUTING.md) has the setup, the rules the tooling enforces,
+and the release ritual.
 
 ## Package name
 
@@ -109,3 +113,7 @@ This package was published as `@vit-foundation/vizvit-chart` up to `0.0.3`,
 which contained only the `ExampleChart` scaffold. It is `@vit-foundation/chart`
 from `0.1.0`. `ExampleChart` is still exported from the barrel; nothing was
 removed.
+
+## License
+
+Apache-2.0

@@ -1,6 +1,7 @@
 {
 	"name": "@vit-foundation/chart",
 	"version": "0.1.0",
+	"license": "Apache-2.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
@@ -14,10 +15,14 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"build-storybook": "storybook build",
+		"dev:docs": "vitepress dev docs",
+		"docs:build": "vitepress build docs",
+		"docs:preview": "vitepress preview docs"
 	},
 	"files": [
 		"dist",
+		"CHANGELOG.md",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
@@ -87,6 +92,7 @@
 		"typescript-eslint": "^8.46.1",
 		"vite": "^7.1.10",
 		"vite-plugin-devtools-json": "^1.0.0",
+		"vitepress": "^1.6.4",
 		"vitest": "^4.0.5",
 		"vitest-browser-svelte": "^2.0.1"
 	},
