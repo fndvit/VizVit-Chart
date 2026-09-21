@@ -17,7 +17,7 @@
 </script>
 
 <svg {width} {height}>
-	{#each data as { label, value }, i}
+	{#each data as { label, value }, i (i)}
 		<rect
 			x={padding + i * ((width - 2 * padding) / data.length)}
 			y={height - padding - (value / maxValue) * (height - 2 * padding)}

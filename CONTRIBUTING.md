@@ -21,11 +21,11 @@ npm run dev:docs                  # the documentation site
 | `npm run docs:build` | Builds the docs site — **fails on a dead link**               |
 | `npm run prepack`    | `svelte-package` + `publint`; what `npm publish` runs         |
 
-`npm run lint` currently reports pre-existing failures in files no recent branch
-touches — the Storybook scaffold under `src/stories/`, `.storybook/`, and
-`src/lib/exampleChart/README.md`. Leave them alone unless you are fixing them on
-purpose, and keep what you add clean; do not let a `npm run format` sweep the
-whole repository into your diff.
+`npm run lint` is green across the whole repository, scaffold included, and it
+is worth keeping that way: once it reports something, the next person stops
+reading its output. Format what you add — `npm run format` on your own paths —
+rather than letting a repository-wide sweep into your diff, which buries the
+change you actually made.
 
 ## Where things live
 
