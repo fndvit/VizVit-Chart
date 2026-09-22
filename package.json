@@ -52,6 +52,36 @@
 			"types": "./dist/legend/PercentLegend.svelte.d.ts",
 			"svelte": "./dist/legend/PercentLegend.svelte",
 			"default": "./dist/legend/PercentLegend.svelte"
+		},
+		"./plot": {
+			"types": "./dist/plot/plotFrame.d.ts",
+			"svelte": "./dist/plot/plotFrame.js",
+			"default": "./dist/plot/plotFrame.js"
+		},
+		"./marks": {
+			"types": "./dist/marks/index.d.ts",
+			"svelte": "./dist/marks/index.js",
+			"default": "./dist/marks/index.js"
+		},
+		"./series": {
+			"types": "./dist/series/series.d.ts",
+			"svelte": "./dist/series/series.js",
+			"default": "./dist/series/series.js"
+		},
+		"./SeriesPlot.svelte": {
+			"types": "./dist/SeriesPlot.svelte.d.ts",
+			"svelte": "./dist/SeriesPlot.svelte",
+			"default": "./dist/SeriesPlot.svelte"
+		},
+		"./WeightWedge.svelte": {
+			"types": "./dist/legend/WeightWedge.svelte.d.ts",
+			"svelte": "./dist/legend/WeightWedge.svelte",
+			"default": "./dist/legend/WeightWedge.svelte"
+		},
+		"./PlotAxes.svelte": {
+			"types": "./dist/plot/PlotAxes.svelte.d.ts",
+			"svelte": "./dist/plot/PlotAxes.svelte",
+			"default": "./dist/plot/PlotAxes.svelte"
 		}
 	},
 	"peerDependencies": {
@@ -72,6 +102,7 @@
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@tailwindcss/vite": "^4.1.14",
 		"@types/chroma-js": "^3.1.2",
+		"@types/d3-scale": "^4.0.9",
 		"@types/node": "^22",
 		"@vitest/browser-playwright": "^4.0.5",
 		"eslint": "^9.38.0",
@@ -112,11 +143,11 @@
 	},
 	"homepage": "https://github.com/fndvit/VizVit-Chart#readme",
 	"dependencies": {
-		"@vitfoundation/test": "^0.0.3",
-		"chroma-js": "^3.2.0"
+		"chroma-js": "^3.2.0",
+		"d3-scale": "^4.0.2"
 	},
 	"publishConfig": {
 		"access": "public"
 	},
-	"description": "Colour scales and the legends that describe them — class bands, ramp legends, and the arithmetic both a renderer and a legend must agree on."
+	"description": "Charts with a pluggable mark seam, the scales behind them, and the legends that describe them — a plot frame, marks, class bands and ramp legends."
 }
