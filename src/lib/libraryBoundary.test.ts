@@ -52,8 +52,8 @@ describe('the published surface', () => {
 		expect(files.length).toBeGreaterThan(0);
 	});
 
-	it('depends on nothing but chroma-js and svelte', () => {
-		const ALLOWED = ['chroma-js', 'svelte'];
+	it('depends on nothing but chroma-js, d3-scale and svelte', () => {
+		const ALLOWED = ['chroma-js', 'd3-scale', 'svelte'];
 		const offenders: string[] = [];
 		for (const file of files) {
 			for (const specifier of specifiersOf(readFileSync(file, 'utf8'))) {
