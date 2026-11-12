@@ -26,7 +26,7 @@
   @property formatY - How a y tick value is written
 -->
 <script lang="ts">
-	import type { PlotFrame } from './plotFrame.js';
+	import { yLabelRise, type PlotFrame } from './plotFrame.js';
 	import { formatCompact, formatInteger, visibleXTicks } from './axisTicks.js';
 
 	let {
@@ -82,12 +82,14 @@
 		{/each}
 	</g>
 
+	<!-- Lifted clear of the top tick label, which is centred on the plot edge
+	     and so stands half its height into this band. -->
 	{#if yLabel}
 		<text
 			class="label"
 			font-size={frame.type.labelFont}
 			x={-frame.margins.left}
-			y={-frame.type.labelGap}
+			y={-yLabelRise(frame.type)}
 			text-anchor="start">{yLabel}</text
 		>
 	{/if}

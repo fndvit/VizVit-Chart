@@ -9,3 +9,13 @@ renamed to its version and a new, empty one takes its place — see
 [all releases](./index.md).
 
 [Compare against the last release on GitHub](https://github.com/fndvit/VizVit-Chart/compare/v0.2.0...main)
+
+## Fixed
+
+- **The y-axis label no longer sits on the top tick label.** Tick labels are
+  centred on their grid rule and a niced domain puts the top rule on the plot's
+  top edge, so the top tick stood half its height into the band above the plot —
+  leaving about 2px under the axis label instead of `labelGap`. The top margin
+  and the label's baseline now count that half-height (`yLabelRise`), so the gap
+  under the y-axis label matches the one the x-axis label keeps from its ticks.
+  The plot area is 5–6px shorter as a result.
