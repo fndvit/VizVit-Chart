@@ -13,7 +13,8 @@ import {
 	MIN_HEIGHT,
 	MIN_PLOT_HEIGHT,
 	NARROW_WIDTH,
-	SHORT_HEIGHT
+	SHORT_HEIGHT,
+	yLabelRise
 } from './plotFrame.js';
 
 const X: [number, number] = [2000, 2024];
@@ -51,6 +52,18 @@ describe('computePlotFrame — margins', () => {
 				? f.type.tickPad
 				: f.type.tickPad + f.type.tickFont + f.type.labelGap;
 			expect(f.margins.bottom).toBeGreaterThanOrEqual(labelTop + f.type.labelFont);
+		}
+	});
+
+	it('lifts the y-axis label clear of the top tick label', () => {
+		for (const height of [180, 240, 600]) {
+			const f = computePlotFrame({ width: 1200, height }, X, Y);
+			// The top tick label is centred on the plot edge, so its top is half
+			// a tick font above it; the label's baseline keeps labelGap from that.
+			const topTickTop = f.type.tickFont / 2;
+			expect(yLabelRise(f.type) - topTickTop).toBe(f.type.labelGap);
+			// ...and the band still holds the label itself.
+			expect(f.margins.top).toBe(yLabelRise(f.type) + f.type.labelFont);
 		}
 	});
 

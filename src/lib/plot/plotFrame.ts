@@ -24,6 +24,12 @@
  *
  * which is what guarantees an axis label can never land on top of the tick
  * labels at any box size.
+ *
+ * The top band has one more term than it looks like it needs. Y tick labels are
+ * centred on their grid rule, and a niced domain puts the top rule on the plot's
+ * top edge — so the top tick label stands half its height *above* the plot, in
+ * the band the y-axis label lives in. {@link yLabelRise} counts that half-height
+ * before the gap, for the margin and for the label alike.
  */
 
 import { scaleLinear, type ScaleLinear } from 'd3-scale';
@@ -45,7 +51,10 @@ export type PlotMargins = {
 	left: number;
 	/** Slack on the right so the last x tick is not clipped. */
 	right: number;
-	/** Band above the plot, sized for the y-axis label. */
+	/**
+	 * Band above the plot, sized for the y-axis label and the half of the top
+	 * tick label that stands above the plot edge.
+	 */
 	top: number;
 	/** Band below the plot, sized for the tick row and the x-axis label. */
 	bottom: number;
@@ -114,6 +123,21 @@ export type PlotFrameOptions = {
 };
 
 /**
+ * How far above the plot's top edge the y-axis label's baseline sits.
+ *
+ * The top tick label is centred on the top edge, so half of it is already in
+ * the way; the label clears that half-height and then `labelGap`, which makes
+ * the space under the y-axis label the same `labelGap` the x-axis label keeps
+ * from its tick row.
+ *
+ * @param type - The frame's type metrics (only the tick font and the gap matter).
+ * @returns The rise in px, measured up from the plot's top edge.
+ */
+export function yLabelRise(type: Pick<PlotTypography, 'tickFont' | 'labelGap'>): number {
+	return type.tickFont / 2 + type.labelGap;
+}
+
+/**
  * Floor for the box height, so a chart dropped into a container with no height
  * at all stays legible rather than collapsing to nothing.
  */
@@ -167,7 +191,7 @@ export function computePlotFrame(
 	// Both share one row; the label sits at the far right, where there is width.
 	const inlineBottom = tickPad + Math.max(tickFont, labelFont) + 4;
 
-	const top = labelFont + labelGap;
+	const top = labelFont + yLabelRise({ tickFont, labelGap });
 	const inlineXLabel = height - top - stackedBottom < MIN_PLOT_HEIGHT;
 
 	const margins: PlotMargins = {
